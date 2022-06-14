@@ -34,7 +34,28 @@ app.get("/getAllProduct",async(req,res)=>{
     }
 })
 
+app.get("/aggregate",async(req,res)=>{
+    try{
+        const result=await product.aggregate(
+            [
+                {
+                    $match:{
+                        price:{$gt:110}
+                    }
+                },
+                {
+                    $sort:{
+                        price:1
+                    }
+                }
+            ]);
+            res.send(result)
 
+    }catch(err){
+        console.log(err)
+        return res.status(400).send("something went wrong!")
+    }
+})
 
 app.listen(port, () => {
   console.log(`App is running on port ${port}`);
