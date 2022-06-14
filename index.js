@@ -21,41 +21,39 @@ app.post("/addProduct", async (req, res) => {
   }
 });
 
-app.get("/getAllProduct",async(req,res)=>{
-    try{
-        const products=await product.find({});
-        if(!products)
-        return res.status(400).send("Something went wrong!");
-        return res.status(200).send(products);
-        
-    }catch(err){
-        console.log(err);
-        return res.status(400).send("something went wrong!")
-    }
-})
+app.get("/getAllProduct", async (req, res) => {
+  try {
+    const products = await product.find({});
+    if (!products) return res.status(400).send("Something went wrong!");
+    return res.status(200).send(products);
+  } catch (err) {
+    console.log(err);
+    return res.status(400).send("something went wrong!");
+  }
+});
 
-app.get("/aggregate",async(req,res)=>{
-    try{
-        const result=await product.aggregate(
-            [
-                {
-                    $match:{
-                        price:{$gt:110}
-                    }
-                },
-                {
-                    $sort:{
-                        price:1
-                    }
-                }
-            ]);
-            res.send(result)
-
-    }catch(err){
-        console.log(err)
-        return res.status(400).send("something went wrong!")
-    }
-})
+app.get("/aggregate", async (req, res) => {
+  try {
+    const result = await product.aggregate([
+      {
+        $match: {
+          price: { $gt: 110 },
+          category: "electronics",
+          "rating.rate": { $gt: 4 }
+        },
+      },
+      {
+        $sort: {
+          price: 1,
+        },
+      },
+    ]);
+    res.send(result);
+  } catch (err) {
+    console.log(err);
+    return res.status(400).send("something went wrong!");
+  }
+});
 
 app.listen(port, () => {
   console.log(`App is running on port ${port}`);
