@@ -25,5 +25,20 @@ const productSchema = new mongoose.Schema({
     required: true,
   },
 });
-
-module.exports=mongoose.model("product",productSchema);
+const product2Schema=new mongoose.Schema({
+    item:{
+        type:String,
+        required:true
+    },
+    price:{
+        type:Number,
+        required:true
+    },
+    quantity:{
+        type:Number,
+        required:true
+    }
+})
+const product=mongoose.model("product",productSchema);
+const product2=mongoose.model("product2",product2Schema);
+module.exports={product,product2}
